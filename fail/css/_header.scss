@@ -1,0 +1,11 @@
+@import "colors";
+
+h2 {
+  background: $less-black-color;
+  text-transform: uppercase;
+  font-family: 'Open Sans Condensed', sans-serif;
+  color: $grey-color;
+  font-size: 18px;
+  font-weight: 100;
+  padding: 20px;
+}

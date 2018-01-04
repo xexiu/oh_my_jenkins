@@ -1,0 +1,73 @@
+@import "reset";
+@import "form";
+@import "header";
+@import "buttons";
+
+body {
+  min-width: 800px;
+  min-height: 550px;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+#omj__options .error {
+  float: left;
+  margin-top: -25px;
+  margin-left: 115px;
+}
+
+.error {
+  color: $red-color;
+  font-size: 1.2em;
+  font-weight: bold;
+  font-style: italic;
+  margin: 10px 30px;
+}
+
+.omj__loading-spinner {
+  width: 40px;
+  height: 30px;
+  margin: 0 5px;
+  padding: 0;
+  vertical-align: bottom;
+}
+
+.omj_hidden {
+  display: none;
+}
+
+.omj_show {
+  display: block;
+}
+
+.omj_successBtn {
+  margin-top: 20px;
+  @extend %blue-btn;
+}
+
+.omj__title--options {
+  margin-bottom: 10px;
+}
+
+.omj__viewName {
+  width: 100%;
+  display: block;
+  text-align: center;
+  font-size: 1.2em;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.omj__blink {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}

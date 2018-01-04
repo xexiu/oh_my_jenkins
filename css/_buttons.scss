@@ -1,0 +1,20 @@
+@import "colors";
+
+%blue-btn {
+  background-color: transparent;
+  border: 1px solid #27A0A0;
+  display: inline-block;
+  cursor: pointer;
+  color: #27A0A0;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 14px;
+  padding: 8px 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: 20px;
+  &:hover{
+    background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+    background-color: #34CACA;
+    color: $white-color;
+  }
+}

@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>
+        Oh my Jenkins!!
+    </title>
+      <link rel="stylesheet" href="css/main.css">
+      <link rel="import" href="templates/template_left.html">
+      <link rel="import" href="templates/template_right.html">
+  </head>
+  <body id="omj__popup">
+  <header class="omj-header">
+      <h2 class="omj-header__title">Oh my Jenkins!!</h2>
+      <nav class="omj-header__nav"></nav>
+  </header>
+    <main class="omj-mainWrapper">
+        <div class="omj-mainWrapper__subNav">
+            <div class="omj-mainWrapper__subNav--status"></div>
+            <div class="omj-mainWrapper__subNav--login"></div>
+        </div>
+        <div class="omj-mainWrapper__Jobs">
+            <div class="omj-mainWrapper__Jobs--addJob"> <!-- input add new job -->
+                <form name="addUrlJob" class="omj__form-style">
+                    <label class="omj-mainWrapper__Jobs--labelUrl" for="url">Job Url</label>
+                    <input type="url" class="form-control" id="url" name="url" autofocus tabindex="1" required>
+                    <button id="addButton" type="submit" class="omj-mainWrapper__Jobs--addJobButton"></button>
+                </form>
+            </div>
+        </div>
+    </main>
+  <div class="error"></div>
+  <footer>
+      <script src="dist/popup.bundle.js"></script>
+  </footer>
+  </body>
+</html>

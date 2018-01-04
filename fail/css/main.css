@@ -1,0 +1,96 @@
+*, html, body {
+  margin: 0;
+  padding: 0; }
+
+.omj__form-style input[type="button"],
+.omj__form-style input[type="submit"] {
+  -moz-box-shadow: inset 0 1px 0 0 #45D6D6;
+  -webkit-box-shadow: inset 0 1px 0 0 #45D6D6;
+  box-shadow: inset 0 1px 0 0 #4D4D4D;
+  background-color: #2CBBBB;
+  border: 1px solid #27A0A0;
+  display: inline-block;
+  cursor: pointer;
+  color: #fff;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 14px;
+  padding: 8px 18px;
+  text-decoration: none;
+  text-transform: uppercase; }
+
+.omj__form-style {
+  font-family: 'Tahoma Sans', arial, sans;
+  padding: 30px;
+  background: #fff; }
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  font-style: italic; }
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-style: italic; }
+
+:-ms-input-placeholder {
+  /* IE 10+ */
+  font-style: italic; }
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-style: italic; }
+
+.omj__form-style input[type="text"],
+.omj__form-style select {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 7px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  background: transparent;
+  margin-bottom: 10px;
+  font: 16px Arial, Helvetica, sans-serif;
+  height: 45px; }
+
+.omj__form-style textarea {
+  resize: none;
+  overflow: hidden; }
+
+.omj__form-style input[type="button"]:hover,
+.omj__form-style input[type="submit"]:hover {
+  background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+  background-color: #34CACA; }
+
+h2 {
+  background: #4D4D4D;
+  text-transform: uppercase;
+  font-family: 'Open Sans Condensed', sans-serif;
+  color: #ccc;
+  font-size: 18px;
+  font-weight: 100;
+  padding: 20px; }
+
+body {
+  min-width: 650px; }
+
+iframe {
+  border: 0; }
+
+.error {
+  color: red;
+  padding: 10px 0;
+  font-size: 1.2em;
+  font-weight: bold;
+  font-style: italic; }
+
+.omj__loading-spinner {
+  width: 40px;
+  height: 30px;
+  margin: 0 5px;
+  padding: 0;
+  vertical-align: bottom; }
+
+/*# sourceMappingURL=main.css.map */

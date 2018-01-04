@@ -1,0 +1,48 @@
+{
+  "manifest_version": 2,
+
+  "name": "Oh my jenkins",
+  "description": "Allow user to see and control builds from Jenkins!",
+  "version": "1.0",
+  "icons": {
+    "16": "img/icon-16.png",
+    "38": "img/icon-38.png",
+    "48": "img/icon-48.png",
+    "128": "img/icon-128.png"
+  },
+  "options_page": "views/options.html",
+
+  "background": {
+    "page": "background.html"
+  },
+  "browser_action": {
+    "default_icon": "img/icon-16.png",
+    "default_popup": "popup.html",
+    "default_title": "Oh my jenkins"
+  },
+  "author": "Sergio Mironescu",
+  "permissions": [
+    "alarms",
+    "storage",
+    "notifications",
+    "cookies",
+    "<all_urls>",
+    "activeTab",
+    "storage"
+  ],
+  "web_accessible_resources": [
+    "img/*.png",
+    "img/*.gif",
+    "js/*",
+    "views/*"
+  ],
+  "minimum_chrome_version": "18",
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+O",
+        "mac": "Command+Shift+O"
+      }
+    }
+  }
+}

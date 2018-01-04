@@ -1,0 +1,164 @@
+*, html, body {
+  margin: 0;
+  padding: 0; }
+
+*, html, body {
+  margin: 0;
+  padding: 0; }
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+*:focus {
+  outline: 0; }
+
+.omj_successBtn {
+  background-color: transparent;
+  border: 1px solid #27A0A0;
+  display: inline-block;
+  cursor: pointer;
+  color: #27A0A0;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 14px;
+  padding: 8px 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: 20px; }
+  .omj_successBtn:hover {
+    background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+    background-color: #34CACA;
+    color: #fff; }
+
+.omj-header {
+  background-color: #4D4D4D;
+  height: 50px; }
+  .omj-header h2 {
+    background-color: #4D4D4D;
+    text-transform: uppercase;
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: #ccc;
+    font-size: 18px;
+    font-weight: 100;
+    padding: 14px; }
+  .omj-header .omj-header__title--user {
+    float: right; }
+  .omj-header .omj-settings__img--settings {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    display: inline-block;
+    padding-top: 5px;
+    padding-left: 5px;
+    cursor: pointer; }
+
+.omj_successBtn {
+  background-color: transparent;
+  border: 1px solid #27A0A0;
+  display: inline-block;
+  cursor: pointer;
+  color: #27A0A0;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 14px;
+  padding: 8px 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: 20px; }
+  .omj_successBtn:hover {
+    background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+    background-color: #34CACA;
+    color: #fff; }
+
+body {
+  min-width: 800px;
+  min-height: 550px; }
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: 0; }
+
+#omj__options .error {
+  float: left;
+  margin-top: -25px;
+  margin-left: 115px; }
+
+.error {
+  color: red;
+  font-size: 1.2em;
+  font-weight: bold;
+  font-style: italic;
+  margin: 10px 30px; }
+
+.omj__loading-spinner {
+  width: 40px;
+  height: 30px;
+  margin: 0 5px;
+  padding: 0;
+  vertical-align: bottom; }
+
+.omj_hidden {
+  display: none; }
+
+.omj_show {
+  display: block; }
+
+.omj_successBtn {
+  margin-top: 20px; }
+
+.omj__title--options {
+  margin-bottom: 10px; }
+
+.omj__viewName {
+  width: 100%;
+  display: block;
+  text-align: center;
+  font-size: 1.2em;
+  padding: 10px;
+  font-weight: 600; }
+
+.omj__blink {
+  animation: blinker 1s linear infinite; }
+
+@keyframes blinker {
+  50% {
+    opacity: 0; } }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,55 @@
+@import "colors";
+@import "buttons";
+
+.omj__form-style {
+  font-family: 'Tahoma Sans', arial, sans;
+  padding: 30px;
+  background: $white-color;
+
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  font-style: italic;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  font-style: italic;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  font-style: italic;
+}
+:-moz-placeholder { /* Firefox 18- */
+  font-style: italic;
+}
+
+.omj__form-style input[type="text"],
+.omj__form-style select {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 7px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  background: transparent;
+  margin-bottom: 10px;
+  font: 16px Arial, Helvetica, sans-serif;
+  height: 45px;
+}
+
+.omj__form-style textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+.omj__form-style input[type="button"],
+.omj__form-style input[type="submit"] {
+  @extend %blue-btn;
+}
+
+.omj__form-style input[type="button"]:hover,
+.omj__form-style input[type="submit"]:hover {
+  background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+  background-color: #34CACA;
+}
