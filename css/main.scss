@@ -2,6 +2,7 @@
 @import "form";
 @import "header";
 @import "buttons";
+@import "jobs";
 
 body {
   min-width: 800px;
@@ -60,6 +61,10 @@ iframe {
   font-size: 1.2em;
   padding: 10px;
   font-weight: 600;
+}
+
+.omj-mainWrapper {
+  margin: 10px;
 }
 
 .omj__blink {

@@ -1,14 +1,29 @@
 import * as Utils from "./Utils";
 import * as _ from "./ConfigJSON";
+import { get as  getStorage } from "./Storage";
+import { set as setStorage } from "./Storage";
+import onChanged from "./Storage";
 
 const API = 'api';
-const scope = Utils.scope;
-const req = Utils.req;
-const $ = Utils.$forEach;
-const Storage = Utils.StorageService(req);
 const defaultJobData = defaultJobDataService();
 const jenkins = jenkinsService(defaultJobData);
-const Jobs = JobsService(req, Storage, jenkins, defaultJobData);
+//const Jobs = JobsService(req, Storage, jenkins, defaultJobData);
+
+async function requestWithAsync(url, callback) {
+    try {
+        url = cleanUrl(`${url}${_.API_JSON}`);
+        const response = await fetch(url, _.fetch);
+        const data = await response.json();
+        if (response.status === _.HTTP_CODE_401) {
+            return errorResponse(response);
+        }
+        return callback ? callback(data) : data;
+    } catch  (err) {
+        Utils.log(err);
+        Utils.error(err);
+        throw new Error(err);
+    }
+}
 
 function jenkinsService(defaultJobData) {
     const buildingRegExp = /_anime$/;
@@ -117,7 +132,7 @@ function JobsService(req, Storage, jenkins, defaultJobData) {
             });
         },
         updateAllStatus: function () {
-            var promises = [];
+            const promises = [];
             $.forEach(Jobs.jobs, function (_, url) {
                 promises.push(Jobs.updateStatus(url));
             });
@@ -135,12 +150,12 @@ function initOptions(scope, Storage) {
         notification: _.all
     };
 
-    Storage.get({options: scope.options}).then(function (objects) {
+    getStorage({options: scope.options}).then(function (objects) {
         scope.options = objects.options;
         scope.broadcast(_.OPTIONS_CHANGED, scope.options);
     });
 
-    Storage.onChanged.addListener(function (objects) {
+    onChanged.addListener(function (objects) {
         if (objects.options) {
             scope.options = objects.options.newValue;
             scope.broadcast(_.OPTIONS_CHANGED, scope.options);
@@ -184,7 +199,15 @@ const Jenkins = {
         initOptions(scope, Storage);
         initJobs(Jobs, Storage, scope);
     },
-    Jobs: Jobs,
+    initDebug: {
+        buildLeftTemplate: () => {
+            return Utils.buildTemplate('#templates_left', '.omj-mainWrapper__Jobs');
+        },
+        buildRightTemplate: () => {
+            return Utils.buildTemplate('#templates_right', '.omj-mainWrapper__Jobs');
+        }
+    },
+    /*Jobs: Jobs,*/
     getJobs: function (url, callback) {
         this.request(url, callback);
     },
@@ -194,14 +217,15 @@ const Jenkins = {
     getBuild: function (url, callback) {
         this.request(url, callback);
     },
-    request: function (url, callback) {
+    request: requestWithAsync(url, callback),
+    /*request: function (url, callback) {
         url = cleanUrl(`${url}${_.API_JSON}`);
         fetch(url, _.fetch).then(function (response) {
             if (response.status === _.HTTP_CODE_401) {
                 return errorResponse(response);
             } else {
                 Utils.clearNode(document, '.omj__loading-spinner');
-                Utils.clearNode(document, '.omj__form-style');
+                Utils.clearNode(document,  '.omj__form-style');
                 response.json().then(function (data) {
                     return callback ? callback(data) : data;
                 });
@@ -210,6 +234,82 @@ const Jenkins = {
             errorResponse(error);
             Utils.log(`${_.SERVER_DOWN}${error}`);
         });
+    },*/
+    /*req: {
+        defer: function () {
+            var defer = {};
+            defer.promise = new Promise(function (resolve, reject) {
+                defer.resolve = resolve;
+                defer.reject = reject;
+            });
+            return defer;
+        },
+        when: function (value) {
+            return Promise.resolve(value);
+        },
+        all: function (iterable) {
+            return Promise.all(iterable);
+        }
+    },*/
+    scope: {
+        dispatchEvent: function (eventName, detail) {
+            window.dispatchEvent(new CustomEvent(eventName, {detail: detail}));
+        },
+        on: function (eventName, callback) {
+            window.addEventListener(eventName, function (e) {
+                callback(e, e.detail);
+            });
+        }
+    },
+    StorageService: function (req) {
+        var storage = chrome.storage.local;
+
+        function promisedCallback(deferred) {
+            return function (data) {
+                if (chrome.runtime.lastError) {
+                    deferred.reject(runtime.lastError);
+                } else {
+                    deferred.resolve(data);
+                }
+            };
+        }
+
+        return {
+            onChanged: chrome.storage.onChanged,
+            get: function (keys) {
+                var deferred = req.defer();
+                storage.get(keys, promisedCallback(deferred));
+                return deferred.promise;
+            },
+            set: function (objects) {
+                var deferred = req.defer();
+                storage.set(objects, promisedCallback(deferred));
+                return deferred.promise;
+            }
+        };
+    },
+    _forEach: {
+        forEach: function (obj, iterator) {
+            if (obj) {
+                if (obj.forEach) {
+                    obj.forEach(iterator);
+                } else if ('length' in obj && obj.length > 0) {
+                    for (let i = 0; i < obj.length; i++) {
+                        iterator(obj[i], i);
+                    }
+                } else {
+                    for (let key in obj) {
+                        if (obj.hasOwnProperty(key)) {
+                            iterator(obj[key], key);
+                        }
+                    }
+                }
+            }
+            return obj;
+        },
+        clone: function (obj) {
+            return JSON.parse(JSON.stringify(obj));
+        }
     }
 };
 

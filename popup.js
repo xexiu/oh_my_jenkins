@@ -156,6 +156,4 @@ const app = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function () {
-    Jenkins.init();
-});
+document.addEventListener('DOMContentLoaded', Jenkins.initDebug.buildLeftTemplate);

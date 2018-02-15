@@ -4,8 +4,8 @@
         Oh my Jenkins!!
     </title>
       <link rel="stylesheet" href="css/main.css">
-      <link rel="import" href="templates/template_left.html">
-      <link rel="import" href="templates/template_right.html">
+      <link rel="import" href="templates/template_left.html" id="templates_left">
+      <link rel="import" href="templates/template_right.html" id="templates_right">
   </head>
   <body id="omj__popup">
   <header class="omj-header">
@@ -21,7 +21,7 @@
             <div class="omj-mainWrapper__Jobs--addJob"> <!-- input add new job -->
                 <form name="addUrlJob" class="omj__form-style">
                     <label class="omj-mainWrapper__Jobs--labelUrl" for="url">Job Url</label>
-                    <input type="url" class="form-control" id="url" name="url" autofocus tabindex="1" required>
+                    <input pattern=".*?[bobthebuilder.marfeel.com].*?\/view\/.*?\/job\/\w+" type="text" class="form-control" id="url" name="url" autofocus tabindex="1" placeholder="Add Jenkins job url..." title="url should follow the format: view/job/_jobname_" required>
                     <button id="addButton" type="submit" class="omj-mainWrapper__Jobs--addJobButton"></button>
                 </form>
             </div>

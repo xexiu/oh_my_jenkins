@@ -1,0 +1,42 @@
+@import "colors";
+
+.omj-mainWrapper__Jobs--addJob {
+  border: 1px solid $light-grey;
+  border-radius: 5px;
+  .omj-mainWrapper__Jobs--labelUrl {
+    display: inline-block;
+    width: 50px;
+    background-color: $light-grey;
+    line-height: 30px;
+    text-align: center;
+    font-weight: bold;
+    padding-right: 5px;
+  }
+  #addButton {
+    display: inline-block;
+    width: 50px;
+    line-height: 30px;
+    float: right;
+    background-color: cadetblue;
+    &:after {
+      content: "+";
+      font-size: 2em;
+      display: inline-block;
+      width: 50px;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+    &:focus {
+      background-color: darkgray;
+    }
+  }
+  input#url {
+    width: 85%;
+    line-height: 30px;
+    &[placeholder] {
+      padding-left: 5px;
+      font-style: italic;
+    }
+  }
+}

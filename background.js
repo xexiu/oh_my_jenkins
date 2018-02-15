@@ -4,16 +4,17 @@ import Config from "./js/core/ConfigJSON";
 
 (function () {
     Jenkins.init();
-    const $scope = Jenkins.$scope;
+    const scope = Jenkins.scope;
     const Jobs = Jenkins.Jobs;
     const $q = Jenkins.$q;
     const _ = Jenkins._;
 
-    $rootScope.$on(Config.jobs.JOBS_INITIALIZED, function () {
-        Jobs.updateAllStatus().then($q.all).then(Services.buildWatcher);
+    scope.on(Config.jobs.JOBS_INITIALIZED, function (event, jobs) {
+        //Jobs.updateAllStatus().then($q.all).then(Services.buildWatcher);
+        console.log(event, jobs)
     });
 
-    $rootScope.$on(Config.jobs.JOBS_CHANGED, function (event, jobs) {
+    scope.on(Config.jobs.JOBS_CHANGED, function (event, jobs) {
         const counts = {};
         _.forEach(jobs, function (data) {
             if (data.jobs) {
@@ -30,33 +31,4 @@ import Config from "./js/core/ConfigJSON";
         chrome.browserAction.setBadgeText({text: count.toString()});
         chrome.browserAction.setBadgeBackgroundColor({color: color});
     });
-
-
-    let data = {};
-
-    const background = {
-        getViews: function (request, sender, sendResponse) {
-            chrome.storage.sync.get(['views'], function (items) {
-                if (!!items && !!items.views) {
-                    data.views = items.views;
-                }
-            });
-            Utils.log('Background getViews: ', sendResponse(data));
-        },
-        savedViews: function (request, sender, sendResponse) {
-            chrome.storage.sync.get(['saved_views'], function (items) {
-                if (!!items && !!items.saved_views) {
-                    data.saved_views = items.saved_views;
-                }
-            });
-            Utils.log('Background savedViews: ', sendResponse(data));
-        },
-        init: function () {
-            chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-                if (request.fn in background) {
-                    background[request.fn](request, sender, sendResponse);
-                }
-            })
-        }
-    };
 })();

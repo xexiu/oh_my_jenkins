@@ -67,6 +67,100 @@ table {
     background-color: #34CACA;
     color: #fff; }
 
+input,
+label,
+select,
+button,
+textarea {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  display: inline-block;
+  vertical-align: middle;
+  white-space: normal;
+  background: none;
+  line-height: 1;
+  /* Browsers have different default form fonts */
+  font-size: 13px;
+  font-family: Arial; }
+
+/* Remove the stupid outer glow in Webkit */
+input:focus {
+  outline: 0; }
+
+/* Box Sizing Reset
+-----------------------------------------------*/
+/* All of our custom controls should be what we expect them to be */
+input,
+textarea {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box; }
+
+/* These elements are usually rendered a certain way by the browser */
+button,
+input[type=reset],
+input[type=button],
+input[type=submit],
+input[type=checkbox],
+input[type=radio],
+select {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+/* Text Inputs
+-----------------------------------------------*/
+/* Button Controls
+-----------------------------------------------*/
+input[type=checkbox],
+input[type=radio] {
+  width: 13px;
+  height: 13px; }
+
+/* File Uploads
+-----------------------------------------------*/
+/* Search Input
+-----------------------------------------------*/
+/* Make webkit render the search input like a normal text field */
+input[type=search] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box; }
+
+/* Turn off the recent search for webkit. It adds about 15px padding on the left */
+::-webkit-search-decoration {
+  display: none; }
+
+/* Buttons
+-----------------------------------------------*/
+button,
+input[type="reset"],
+input[type="button"],
+input[type="submit"] {
+  /* Fix IE7 display bug */
+  overflow: visible;
+  width: auto; }
+
+/* IE8 and FF freak out if this rule is within another selector */
+::-webkit-file-upload-button {
+  padding: 0;
+  border: 0;
+  background: none; }
+
+/* Textarea
+-----------------------------------------------*/
+textarea {
+  /* Move the label to the top */
+  vertical-align: top;
+  /* Turn off scroll bars in IE unless needed */
+  overflow: auto; }
+
+/* Selects
+-----------------------------------------------*/
+select[multiple] {
+  /* Move the label to the top */
+  vertical-align: top; }
+
 .omj-header {
   background-color: #4D4D4D;
   height: 50px; }
@@ -105,6 +199,39 @@ table {
     background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
     background-color: #34CACA;
     color: #fff; }
+
+.omj-mainWrapper__Jobs--addJob {
+  border: 1px solid #ddd;
+  border-radius: 5px; }
+  .omj-mainWrapper__Jobs--addJob .omj-mainWrapper__Jobs--labelUrl {
+    display: inline-block;
+    width: 50px;
+    background-color: #ddd;
+    line-height: 30px;
+    text-align: center;
+    font-weight: bold;
+    padding-right: 5px; }
+  .omj-mainWrapper__Jobs--addJob #addButton {
+    display: inline-block;
+    width: 50px;
+    line-height: 30px;
+    float: right;
+    background-color: cadetblue; }
+    .omj-mainWrapper__Jobs--addJob #addButton:after {
+      content: "+";
+      font-size: 2em;
+      display: inline-block;
+      width: 50px; }
+    .omj-mainWrapper__Jobs--addJob #addButton:hover {
+      cursor: pointer; }
+    .omj-mainWrapper__Jobs--addJob #addButton:focus {
+      background-color: darkgray; }
+  .omj-mainWrapper__Jobs--addJob input#url {
+    width: 85%;
+    line-height: 30px; }
+    .omj-mainWrapper__Jobs--addJob input#url[placeholder] {
+      padding-left: 5px;
+      font-style: italic; }
 
 body {
   min-width: 800px;
@@ -153,6 +280,9 @@ iframe {
   font-size: 1.2em;
   padding: 10px;
   font-weight: 600; }
+
+.omj-mainWrapper {
+  margin: 10px; }
 
 .omj__blink {
   animation: blinker 1s linear infinite; }

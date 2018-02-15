@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,6 +71,21 @@
 
 
 module.exports = {
+    buildTemplate: function buildTemplate(selector, containerSelector) {
+        var templateImport = document.querySelector(selector).import;
+        var template = templateImport.documentElement.querySelector('template');
+        var cloneTemplate = document.importNode(template.content, true);
+        document.querySelector(containerSelector).appendChild(cloneTemplate);
+    },
+    addclass: function addclass(elm, newclass) {
+        var classes = elm.className.split(' ');
+        classes.push(newclass);
+        if (elm.className === newClass) {
+            throw Error('class name: ' + newclass + ' has already been defined!');
+        } else {
+            elm.className = classes.join(' ');
+        }
+    },
     qs: function qs(selector, node) {
         return (node || document).querySelector(selector);
     },
@@ -107,7 +122,7 @@ module.exports = {
     },
     closePopUp: function closePopUp() {
         chrome.extension.getViews({ type: "popup" }).forEach(function (win) {
-            if (win != window) win.close();
+            if (win !== window) win.close();
         });
     },
     createIframe: function createIframe(src) {
@@ -127,98 +142,15 @@ module.exports = {
         if (element && element.classList.contains(selector)) {
             element.classList.remove(selector);
         } else {
-            console.log('Utils.removeClass: ', element + 'already removed this class: ', selector);
-        }
-    },
-    addClass: function addClass(element, selector) {
-        if (element && element.classList.contains(selector)) {
-            console.log('Utils.addClass: ', element + 'already has this class: ', selector);
-        } else {
-            element.classList.add(selector);
+            throw Error('removeClass: ' + element + ' already removed this class: ' + selector);
         }
     },
     insertElement: function insertElement(node, position, element) {
         return node.insertAdjacentElement(position, element);
     },
-    error: function error(text) {
+    error: function error(msg) {
         var error = Utils.qs('.error');
-        error.innerText = text;
-    },
-    req: {
-        defer: function defer() {
-            var defer = {};
-            defer.promise = new Promise(function (resolve, reject) {
-                defer.resolve = resolve;
-                defer.reject = reject;
-            });
-            return defer;
-        },
-        when: function when(value) {
-            return Promise.resolve(value);
-        },
-        all: function all(iterable) {
-            return Promise.all(iterable);
-        }
-    },
-    scope: {
-        broadcast: function broadcast(name, detail) {
-            window.dispatchEvent(new CustomEvent(name, { detail: detail }));
-        },
-        on: function on(name, callback) {
-            window.addEventListener(name, function (e) {
-                callback(e, e.detail);
-            });
-        }
-    },
-    StorageService: function StorageService(req) {
-        var storage = chrome.storage.local;
-
-        function promisedCallback(deferred) {
-            return function (data) {
-                if (chrome.runtime.lastError) {
-                    deferred.reject(runtime.lastError);
-                } else {
-                    deferred.resolve(data);
-                }
-            };
-        }
-
-        return {
-            onChanged: chrome.storage.onChanged,
-            get: function get(keys) {
-                var deferred = req.defer();
-                storage.get(keys, promisedCallback(deferred));
-                return deferred.promise;
-            },
-            set: function set(objects) {
-                var deferred = req.defer();
-                storage.set(objects, promisedCallback(deferred));
-                return deferred.promise;
-            }
-        };
-    },
-    $forEach: {
-        forEach: function forEach(obj, iterator) {
-            if (obj) {
-                if (obj.forEach) {
-                    obj.forEach(iterator);
-                } else if ('length' in obj && obj.length > 0) {
-                    for (var i = 0; i < obj.length; i++) {
-                        iterator(obj[i], i);
-                    }
-                } else {
-                    for (var key in obj) {
-                        if (obj.hasOwnProperty(key)) {
-                            iterator(obj[key], key);
-                        }
-                    }
-                }
-            }
-            return obj;
-        },
-        clone: function clone(obj) {
-            return JSON.parse(JSON.stringify(obj));
-        }
+        error.innerText = msg;
     }
 };
 
@@ -277,16 +209,34 @@ var _ConfigJSON = __webpack_require__(1);
 
 var _ = _interopRequireWildcard(_ConfigJSON);
 
+var _Storage = __webpack_require__(3);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var API = 'api';
-var scope = Utils.scope;
-var req = Utils.req;
-var $ = Utils.$forEach;
-var Storage = Utils.StorageService(req);
 var defaultJobData = defaultJobDataService();
 var jenkins = jenkinsService(defaultJobData);
-var Jobs = JobsService(req, Storage, jenkins, defaultJobData);
+//const Jobs = JobsService(req, Storage, jenkins, defaultJobData);
+
+async function requestWithAsync(url, callback) {
+    try {
+        url = cleanUrl("" + url + _.API_JSON);
+        var response = await fetch(url, _.fetch);
+        var data = await response.json();
+        if (response.status === _.HTTP_CODE_401) {
+            return errorResponse(response);
+        }
+        return callback ? callback(data) : data;
+    } catch (err) {
+        Utils.log(err);
+        Utils.error(err);
+        throw new Error(err);
+    }
+}
 
 function jenkinsService(defaultJobData) {
     var buildingRegExp = /_anime$/;
@@ -413,12 +363,12 @@ function initOptions(scope, Storage) {
         notification: _.all
     };
 
-    Storage.get({ options: scope.options }).then(function (objects) {
+    (0, _Storage.get)({ options: scope.options }).then(function (objects) {
         scope.options = objects.options;
         scope.broadcast(_.OPTIONS_CHANGED, scope.options);
     });
 
-    Storage.onChanged.addListener(function (objects) {
+    _Storage2.default.addListener(function (objects) {
         if (objects.options) {
             scope.options = objects.options.newValue;
             scope.broadcast(_.OPTIONS_CHANGED, scope.options);
@@ -462,7 +412,15 @@ var Jenkins = {
         initOptions(scope, Storage);
         initJobs(Jobs, Storage, scope);
     },
-    Jobs: Jobs,
+    initDebug: {
+        buildLeftTemplate: function buildLeftTemplate() {
+            return Utils.buildTemplate('#templates_left', '.omj-mainWrapper__Jobs');
+        },
+        buildRightTemplate: function buildRightTemplate() {
+            return Utils.buildTemplate('#templates_right', '.omj-mainWrapper__Jobs');
+        }
+    },
+    /*Jobs: Jobs,*/
     getJobs: function getJobs(url, callback) {
         this.request(url, callback);
     },
@@ -472,31 +430,131 @@ var Jenkins = {
     getBuild: function getBuild(url, callback) {
         this.request(url, callback);
     },
-    request: function request(url, callback) {
-        url = cleanUrl("" + url + _.API_JSON);
+    request: requestWithAsync(url, callback),
+    /*request: function (url, callback) {
+        url = cleanUrl(`${url}${_.API_JSON}`);
         fetch(url, _.fetch).then(function (response) {
             if (response.status === _.HTTP_CODE_401) {
                 return errorResponse(response);
             } else {
                 Utils.clearNode(document, '.omj__loading-spinner');
-                Utils.clearNode(document, '.omj__form-style');
+                Utils.clearNode(document,  '.omj__form-style');
                 response.json().then(function (data) {
                     return callback ? callback(data) : data;
                 });
             }
         }).catch(function (error) {
             errorResponse(error);
-            Utils.log("" + _.SERVER_DOWN + error);
+            Utils.log(`${_.SERVER_DOWN}${error}`);
         });
+    },*/
+    /*req: {
+        defer: function () {
+            var defer = {};
+            defer.promise = new Promise(function (resolve, reject) {
+                defer.resolve = resolve;
+                defer.reject = reject;
+            });
+            return defer;
+        },
+        when: function (value) {
+            return Promise.resolve(value);
+        },
+        all: function (iterable) {
+            return Promise.all(iterable);
+        }
+    },*/
+    scope: {
+        dispatchEvent: function dispatchEvent(eventName, detail) {
+            window.dispatchEvent(new CustomEvent(eventName, { detail: detail }));
+        },
+        on: function on(eventName, callback) {
+            window.addEventListener(eventName, function (e) {
+                callback(e, e.detail);
+            });
+        }
+    },
+    StorageService: function StorageService(req) {
+        var storage = chrome.storage.local;
+
+        function promisedCallback(deferred) {
+            return function (data) {
+                if (chrome.runtime.lastError) {
+                    deferred.reject(runtime.lastError);
+                } else {
+                    deferred.resolve(data);
+                }
+            };
+        }
+
+        return {
+            onChanged: chrome.storage.onChanged,
+            get: function get(keys) {
+                var deferred = req.defer();
+                storage.get(keys, promisedCallback(deferred));
+                return deferred.promise;
+            },
+            set: function set(objects) {
+                var deferred = req.defer();
+                storage.set(objects, promisedCallback(deferred));
+                return deferred.promise;
+            }
+        };
+    },
+    _forEach: {
+        forEach: function forEach(obj, iterator) {
+            if (obj) {
+                if (obj.forEach) {
+                    obj.forEach(iterator);
+                } else if ('length' in obj && obj.length > 0) {
+                    for (var i = 0; i < obj.length; i++) {
+                        iterator(obj[i], i);
+                    }
+                } else {
+                    for (var key in obj) {
+                        if (obj.hasOwnProperty(key)) {
+                            iterator(obj[key], key);
+                        }
+                    }
+                }
+            }
+            return obj;
+        },
+        clone: function clone(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        }
     }
 };
 
 module.exports = Jenkins;
 
 /***/ }),
-/* 3 */,
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var storage = chrome.storage.sync;
+
+var request = async function request(keys, callback) {
+    var response = await callback;
+};
+
+module.exports = {
+    onChanged: chrome.storage.onChanged,
+    get: function get(keys) {
+        request(keys, storage.get(keys));
+    },
+    set: function set(keys) {
+        request(keys, storage.set(keys));
+    }
+};
+
+/***/ }),
 /* 4 */,
-/* 5 */
+/* 5 */,
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
